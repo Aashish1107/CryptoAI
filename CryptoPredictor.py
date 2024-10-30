@@ -238,11 +238,12 @@ def test():
     #print(X_test.shape)
     
     y_pred=model.predict(X_test)
-    y_pred_binary = (y_pred > 0.5).astype(int)
+    y_pred_binary = list((y_pred > 0.5).astype(int).flatten())
     print("No. of 1s="+ str(sum(y_pred_binary)))
     print("No. of 0s="+str(len(y_pred_binary)-sum(y_pred_binary)))
     row_id=[i for i in range(len(y_pred_binary))]
-    test_df=pd.DataFrame({'row_id': row_id, 'target': list(y_pred_binary)})
+    test_df=pd.DataFrame({'row_id': row_id, 'target': y_pred_binary})
+    test_df.set_index('row_id', inplace=True)
     print(test_df)
     test_df.to_csv('./Data/Submissions.csv')
     print('Uploaded')
